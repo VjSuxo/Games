@@ -5,6 +5,7 @@
  */
 package juego;
 
+import control.teclado;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -17,7 +18,7 @@ import javax.swing.JFrame;
  */
 public class Juego extends Canvas implements Runnable{
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1l;     
     
     //dimenciones de la ventana
     private static final int ANCHO = 800 ;
@@ -33,8 +34,15 @@ public class Juego extends Canvas implements Runnable{
     
     private static JFrame ventana;
     private static Thread thread;
+    private static teclado teclado;
+    
     private Juego(){
         setPreferredSize(new Dimension(ANCHO,ALTO));
+        
+        // Movimiento por teclado
+        teclado = new  teclado();
+        addKeyListener(teclado);
+        //fin de movimiento del teclado
         
         ventana = new JFrame(NOMBRE);
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,6 +80,25 @@ public class Juego extends Canvas implements Runnable{
         }
     }
     private void actualizar(){
+        
+        // movimiento tecaldo 
+        teclado.actualizar();
+        
+        if(teclado.arriba){
+            System.out.println("ARRIBA");
+        }
+        if(teclado.abajo){
+            System.out.println("ABAJO");
+        }
+        if(teclado.izquierda){
+            System.out.println("IZQUIERDA");
+        }
+        if(teclado.derecha){
+            System.out.println("DERECHA");
+        }
+        
+        //fin de movimiento
+        
         aps++;
     }
     
@@ -90,6 +117,8 @@ public class Juego extends Canvas implements Runnable{
         
         double tiempoTranscurrido;
         double delta = 0;
+        
+        requestFocus();
         
         while(enFuncionamiento){
             final long inicioBucle = System.nanoTime();
